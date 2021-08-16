@@ -42,5 +42,13 @@ public class ConexaoMySQL {
 			return false;
 		}
 	}
+	
+	public static Connection getCon() {
+		return con;
+	}
+
+	public static void setCon(Connection con) {
+		ConexaoMySQL.con = con;
+	}
 
 }
