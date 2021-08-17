@@ -20,7 +20,10 @@ public class LoginControle implements ActionListener {
 		this.jan = jan;
 		this.login = login;
 		logindao = new LoginDAO();
+		registraListeners();
+	}
 
+	public void registraListeners() {
 		jan.getTelaLogin().getButtonEntrar().addActionListener(this);
 		jan.getTelaLogin().getButtonLimparLogin().addActionListener(this);
 	}

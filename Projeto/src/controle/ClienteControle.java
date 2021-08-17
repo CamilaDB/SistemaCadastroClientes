@@ -21,7 +21,10 @@ public class ClienteControle implements ActionListener {
 		this.jan = jan;
 		this.cli = cli;
 		clidao = new ClienteDAO();
-		
+		registraListeners();
+	}
+
+	public void registraListeners() {
 		jan.getTelaCliente().getButtonCadastrar().addActionListener(this);
 		jan.getTelaCliente().getButtonConsultar().addActionListener(this);
 		jan.getTelaCliente().getButtonAtualizar().addActionListener(this);
@@ -32,18 +35,10 @@ public class ClienteControle implements ActionListener {
 	public void cadastraCliente() {
 		flag = true;
 		try {
-			cli.setCpf(jan.getTelaCliente().getFieldCPF().getText());
-			cli.setNome(jan.getTelaCliente().getFieldNome().getText());
-			cli.setGenero(jan.getTelaCliente().getGrupo().getSelection().getActionCommand().charAt(0));
-			cli.setProfissao(jan.getTelaCliente().getComboBoxProfissao().getSelectedItem().toString());
-			cli.setEndereco(jan.getTelaCliente().getFieldEndereco().getText());
-			cli.setEmail(jan.getTelaCliente().getFieldEmail().getText());
-			cli.setTelefone(jan.getTelaCliente().getFieldTelefone().getText());
-			cli.setDataNascimento(jan.getTelaCliente().getFieldDataNasc().getText());
+			transfereDados();
 		} catch (Exception e) {
 			// TODO: handle exception
-			JOptionPane.showMessageDialog(jan.getContentPane(),"Verifique campos em branco!", "ERRO", 0);
-			flag = false;
+			mensagemErro("Verifique campos em branco!");
 		}
 		if (flag == true)
 			if (clidao.insereCliente(cli)) {
@@ -62,9 +57,8 @@ public class ClienteControle implements ActionListener {
 		try {
 			clidao.selecionaCliente(cli);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(jan.getContentPane(),"O CPF não existe!", "ERRO", 0);
-			flag = false;
-		} 
+			mensagemErro("O CPF não existe!");
+		}
 
 		if (flag == true) {
 			jan.getTelaCliente().getFieldNome().setText(cli.getNome());
@@ -86,17 +80,9 @@ public class ClienteControle implements ActionListener {
 	public void alteraCliente() {
 		flag = true;
 		try {
-			cli.setCpf(jan.getTelaCliente().getFieldCPF().getText());
-			cli.setNome(jan.getTelaCliente().getFieldNome().getText());
-			cli.setGenero(jan.getTelaCliente().getGrupo().getSelection().getActionCommand().charAt(0));
-			cli.setProfissao(jan.getTelaCliente().getComboBoxProfissao().getSelectedItem().toString());
-			cli.setEndereco(jan.getTelaCliente().getFieldEndereco().getText());
-			cli.setEmail(jan.getTelaCliente().getFieldEmail().getText());
-			cli.setTelefone(jan.getTelaCliente().getFieldTelefone().getText());
-			cli.setDataNascimento(jan.getTelaCliente().getFieldDataNasc().getText());
+			transfereDados();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(jan.getContentPane(),"O CPF não existe!", "ERRO", 0);
-			flag = false;
+			mensagemErro("O CPF não existe!");
 		}
 
 		if (flag == true)
@@ -129,7 +115,22 @@ public class ClienteControle implements ActionListener {
 		jan.getTelaCliente().getFieldTelefone().setText("");
 		jan.getTelaCliente().getFieldDataNasc().setText("");
 	}
+
+	public void transfereDados() {
+		cli.setCpf(jan.getTelaCliente().getFieldCPF().getText());
+		cli.setNome(jan.getTelaCliente().getFieldNome().getText());
+		cli.setGenero(jan.getTelaCliente().getGrupo().getSelection().getActionCommand().charAt(0));
+		cli.setProfissao(jan.getTelaCliente().getComboBoxProfissao().getSelectedItem().toString());
+		cli.setEndereco(jan.getTelaCliente().getFieldEndereco().getText());
+		cli.setEmail(jan.getTelaCliente().getFieldEmail().getText());
+		cli.setTelefone(jan.getTelaCliente().getFieldTelefone().getText());
+		cli.setDataNascimento(jan.getTelaCliente().getFieldDataNasc().getText());
+	}
 	
+	public void mensagemErro(String mensagem) {
+		JOptionPane.showMessageDialog(jan.getContentPane(), mensagem, "ERRO", 0);
+		flag = false;
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
